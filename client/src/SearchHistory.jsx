@@ -28,7 +28,7 @@ function SearchHistory({ onCityClick }) {
             className="history-item"
             onClick={() => onCityClick(item.city)}
           >
-            🕐 {item.city}
+            🕐 {item.city.charAt(0).toUpperCase() + item.city.slice(1)}
           </button>
         ))}
       </div>

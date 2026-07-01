@@ -24,7 +24,11 @@ router.get('/', async (req, res) => {
       }
     );
 
-    await SearchHistory.create({ city });
+    await SearchHistory.findOneAndUpdate(
+  { city: city.toLowerCase() },
+  { city: city.toLowerCase(), searchedAt: Date.now() },
+  { upsert: true, new: true }
+);
     res.json(response.data);
 
   } catch (err) {
