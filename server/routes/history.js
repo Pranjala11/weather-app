@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const SearchHistory = require('../models/SearchHistory');
 
-// Get last 10 searches
+// Get last 10 UNIQUE searches
 router.get('/', async (req, res) => {
   try {
     const history = await SearchHistory
