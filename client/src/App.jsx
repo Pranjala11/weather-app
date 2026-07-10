@@ -87,7 +87,7 @@ function App() {
     <div className={`app ${bgClass}`}>
       <div className="container">
         <div className="header">
-          <h1>WEATHER</h1>
+          <h1>WEATHER FORECAST</h1>
         </div>
 
         <div className="search-box">
