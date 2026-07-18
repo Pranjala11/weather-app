@@ -7,7 +7,7 @@ function SearchHistory({ onCityClick }) {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/history')
+        const res = await axios.get('/api/history')
         setHistory(res.data)
       } catch (err) {
         console.log('History error:', err)
