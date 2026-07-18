@@ -44,7 +44,11 @@ function App() {
     setWeather(null)
 
     try {
-      const res = await axios.get(`${API}/api/weather?city=${searchCity}`)
+      const res = await axios.get(`${API}/api/weather?city=${searchCity}`, {
+  headers: {
+    'ngrok-skip-browser-warning': 'true'
+  }
+})
       setWeather(res.data)
       setBgClass(getBgClass(res.data.weather[0].main))
       setRefreshHistory(prev => prev + 1)
@@ -66,7 +70,11 @@ function App() {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords
-          const res = await axios.get(`${API}/api/weather/coords?lat=${latitude}&lon=${longitude}`)
+          const res = await axios.get(`${API}/api/weather/coords?lat=${latitude}&lon=${longitude}`, {
+  headers: {
+    'ngrok-skip-browser-warning': 'true'
+  }
+})
           setWeather(res.data)
           setBgClass(getBgClass(res.data.weather[0].main))
           setRefreshHistory(prev => prev + 1)

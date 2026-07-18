@@ -8,7 +8,11 @@ function SearchHistory({ onCityClick }) {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get(`${API}/api/history`)
+        const res = await axios.get(`${API}/api/history`, {
+  headers: {
+    'ngrok-skip-browser-warning': 'true'
+  }
+})
         setHistory(res.data)
       } catch (err) {
         console.log('History error:', err)
