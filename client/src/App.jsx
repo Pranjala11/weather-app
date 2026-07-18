@@ -43,7 +43,7 @@ function App() {
     setWeather(null)
 
     try {
-      const res = await axios.get(`/api/weather?city=${searchCity}`)
+      const res = await axios.get(`${API}/api/weather?city=${searchCity}`)
       setWeather(res.data)
       setBgClass(getBgClass(res.data.weather[0].main))
       setRefreshHistory(prev => prev + 1)
