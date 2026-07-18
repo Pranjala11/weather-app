@@ -9,10 +9,17 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: '*'
+  origin: 'https://weather-app-eight-kappa-34.vercel.app',
+  methods: ['GET', 'POST'],
+  credentials: true
 }));
+
+// ngrok header
 app.use((req, res, next) => {
   res.setHeader('ngrok-skip-browser-warning', 'true')
+  res.setHeader('Access-Control-Allow-Origin', 'https://weather-app-eight-kappa-34.vercel.app')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
   next()
 })
 app.use(express.json());
