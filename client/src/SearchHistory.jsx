@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+const API = import.meta.env.VITE_API_URL || 'https://parabola-marshland-crown.ngrok-free.dev'
 
 function SearchHistory({ onCityClick }) {
   const [history, setHistory] = useState([])
@@ -7,7 +8,7 @@ function SearchHistory({ onCityClick }) {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get('https://parabola-marshland-crown.ngrok-free.dev/api/history')
+        const res = await axios.get(`${API}/api/history`)
         setHistory(res.data)
       } catch (err) {
         console.log('History error:', err)

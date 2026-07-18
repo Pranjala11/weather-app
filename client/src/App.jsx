@@ -3,7 +3,7 @@ import axios from 'axios'
 import SearchHistory from './SearchHistory'
 import './App.css'
 
-const API = 'https://parabola-marshland-crown.ngrok-free.dev'
+const API = import.meta.env.VITE_API_URL || 'https://parabola-marshland-crown.ngrok-free.dev'
 
 const getWeatherIcon = (condition) => {
   const c = condition?.toLowerCase()
