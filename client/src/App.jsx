@@ -42,7 +42,7 @@ function App() {
     setWeather(null)
 
     try {
-      const res = await axios.get(`http://localhost:5000/api/weather?city=${searchCity}`)
+      const res = await axios.get(`/api/weather?city=${searchCity}`)
       setWeather(res.data)
       setBgClass(getBgClass(res.data.weather[0].main))
       setRefreshHistory(prev => prev + 1)
@@ -64,9 +64,7 @@ function App() {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords
-          const res = await axios.get(
-            `http://localhost:5000/api/weather/coords?lat=${latitude}&lon=${longitude}`
-          )
+          const res = await axios.get(`/api/weather/coords?lat=${latitude}&lon=${longitude}`)
           setWeather(res.data)
           setBgClass(getBgClass(res.data.weather[0].main))
           setRefreshHistory(prev => prev + 1)
