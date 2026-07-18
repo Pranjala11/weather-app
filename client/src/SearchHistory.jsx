@@ -7,7 +7,7 @@ function SearchHistory({ onCityClick }) {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const res = await axios.get('/api/history')
+        const res = await axios.get('https://parabola-marshland-crown.ngrok-free.dev/api/history')
         setHistory(res.data)
       } catch (err) {
         console.log('History error:', err)
