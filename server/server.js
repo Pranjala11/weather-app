@@ -11,6 +11,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: '*'
 }));
+app.use((req, res, next) => {
+  res.setHeader('ngrok-skip-browser-warning', 'true')
+  next()
+})
 app.use(express.json());
 
 // Connect to MongoDB
