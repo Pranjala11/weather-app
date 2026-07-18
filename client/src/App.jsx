@@ -65,7 +65,7 @@ function App() {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords
-          const res = await axios.get(`/api/weather/coords?lat=${latitude}&lon=${longitude}`)
+          const res = await axios.get(`${API}/api/weather/coords?lat=${latitude}&lon=${longitude}`)
           setWeather(res.data)
           setBgClass(getBgClass(res.data.weather[0].main))
           setRefreshHistory(prev => prev + 1)
