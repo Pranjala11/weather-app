@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import SearchHistory from './SearchHistory'
 import './App.css'
+
 const API = 'https://parabola-marshland-crown.ngrok-free.dev'
 
 const getWeatherIcon = (condition) => {
