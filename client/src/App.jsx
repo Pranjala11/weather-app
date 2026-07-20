@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import axios from 'axios'
-import SearchHistory from './SearchHistory'
 import './App.css'
 
-const API = import.meta.env.VITE_API_URL || 'https://parabola-marshland-crown.ngrok-free.dev'
+const API_KEY = 'your_openweather_key_here'
+const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 const getWeatherIcon = (condition) => {
   const c = condition?.toLowerCase()
@@ -33,8 +33,8 @@ function App() {
   const [weather, setWeather] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [refreshHistory, setRefreshHistory] = useState(0)
   const [bgClass, setBgClass] = useState('bg-default')
+  const [history, setHistory] = useState([])
 
   const searchWeather = async (cityName) => {
     const searchCity = cityName || city
@@ -44,16 +44,21 @@ function App() {
     setWeather(null)
 
     try {
-      const res = await axios.get(`${API}/api/weather?city=${searchCity}`, {
-  headers: {
-    'ngrok-skip-browser-warning': 'true'
-  }
-})
+      const res = await axios.get(BASE_URL, {
+        params: {
+          q: searchCity,
+          appid: API_KEY,
+          units: 'metric'
+        }
+      })
       setWeather(res.data)
       setBgClass(getBgClass(res.data.weather[0].main))
-      setRefreshHistory(prev => prev + 1)
+      setHistory(prev => {
+        const filtered = prev.filter(c => c.toLowerCase() !== searchCity.toLowerCase())
+        return [searchCity, ...filtered].slice(0, 8)
+      })
     } catch (err) {
-      setError(err.response?.data?.error || 'City not found')
+      setError('City not found')
     } finally {
       setLoading(false)
     }
@@ -61,7 +66,7 @@ function App() {
 
   const getLocation = () => {
     if (!navigator.geolocation) {
-      setError('Geolocation not supported by your browser')
+      setError('Geolocation not supported')
       return
     }
     setLoading(true)
@@ -70,16 +75,18 @@ function App() {
       async (position) => {
         try {
           const { latitude, longitude } = position.coords
-          const res = await axios.get(`${API}/api/weather/coords?lat=${latitude}&lon=${longitude}`, {
-  headers: {
-    'ngrok-skip-browser-warning': 'true'
-  }
-})
+          const res = await axios.get(BASE_URL, {
+            params: {
+              lat: latitude,
+              lon: longitude,
+              appid: API_KEY,
+              units: 'metric'
+            }
+          })
           setWeather(res.data)
           setBgClass(getBgClass(res.data.weather[0].main))
-          setRefreshHistory(prev => prev + 1)
         } catch (err) {
-          setError('Could not get weather for your location')
+          setError('Could not get location weather')
         } finally {
           setLoading(false)
         }
@@ -95,7 +102,7 @@ function App() {
     <div className={`app ${bgClass}`}>
       <div className="container">
         <div className="header">
-          <h1>WEATHER FORECAST</h1>
+          <h1>WEATHER</h1>
         </div>
 
         <div className="search-box">
@@ -109,13 +116,12 @@ function App() {
           <button onClick={() => searchWeather()}>
             {loading ? '...' : '🔍'}
           </button>
-          <button className="gps-btn" onClick={getLocation} title="Use my location">
+          <button className="gps-btn" onClick={getLocation}>
             📍
           </button>
         </div>
 
         {error && <div className="error">{error}</div>}
-
         {loading && <div className="loading">Fetching weather...</div>}
 
         {weather && !loading && (
@@ -129,9 +135,7 @@ function App() {
               {Math.round(weather.main.temp)}<sup>°C</sup>
             </div>
             <div className="description">{weather.weather[0].description}</div>
-
             <div className="divider" />
-
             <div className="details">
               <div className="detail">
                 <span className="detail-icon">💧</span>
@@ -149,7 +153,6 @@ function App() {
                 <span className="detail-value">{Math.round(weather.main.feels_like)}°C</span>
               </div>
             </div>
-
             <div className="extra-details">
               <div className="extra-item">
                 <div className="label">Min Temp</div>
@@ -171,13 +174,25 @@ function App() {
           </div>
         )}
 
-        <SearchHistory
-          key={refreshHistory}
-          onCityClick={(cityName) => {
-            setCity(cityName)
-            searchWeather(cityName)
-          }}
-        />
+        {history.length > 0 && (
+          <div className="history">
+            <h3>Recent Searches</h3>
+            <div className="history-list">
+              {history.map((item, index) => (
+                <button
+                  key={index}
+                  className="history-item"
+                  onClick={() => {
+                    setCity(item)
+                    searchWeather(item)
+                  }}
+                >
+                  🕐 {item}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
