@@ -2,7 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import './App.css'
 
-const API_KEY = 'your_openweather_key_here'
+const API_KEY = import.meta.env.VITE_API_KEY
 const BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 const getWeatherIcon = (condition) => {
